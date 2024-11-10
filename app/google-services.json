@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1005838939663",
+    "project_id": "planners-and-movers-app",
+    "storage_bucket": "planners-and-movers-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1005838939663:android:6f47901d79a99ef5f4d57a",
+        "android_client_info": {
+          "package_name": "com.example.plannersandmoversapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDybtljDxThT4xW32sGGjaAAFWhOA5URSc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
