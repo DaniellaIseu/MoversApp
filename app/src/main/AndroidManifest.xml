@@ -30,6 +30,10 @@
             android:name=".MainActivity"
             android:exported="true">
         </activity>
+
+        <activity android:name=".CompanyProfileActivity">
+            <!-- Add any additional configurations for CompanyProfileActivity -->
+        </activity>
     </application>
 
 </manifest>
