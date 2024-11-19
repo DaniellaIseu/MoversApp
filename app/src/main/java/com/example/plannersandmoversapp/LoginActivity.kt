@@ -18,13 +18,14 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLogInBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
+        // Redirect to sign-up
         firebaseAuth = FirebaseAuth.getInstance()
         binding.signupRedirectText.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }
 
+        // Login logic
         binding.loginButton.setOnClickListener {
             val email = binding.email.text.toString()
             val pass = binding.password.text.toString()
@@ -33,8 +34,10 @@ class LoginActivity : AppCompatActivity() {
 
                 firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener {
                     if (it.isSuccessful) {
-                        val intent = Intent(this, MainActivity::class.java)
+                        // After successful login, navigate to CompanyProfileActivity
+                        val intent = Intent(this, CompanyProfileActivity::class.java)
                         startActivity(intent)
+
                     } else {
                         Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
 
@@ -51,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
         super.onStart()
 
         if(firebaseAuth.currentUser != null){
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, CompanyProfileActivity::class.java)
             startActivity(intent)
         }
     }
