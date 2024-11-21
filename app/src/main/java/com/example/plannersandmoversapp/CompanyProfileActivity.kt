@@ -1,5 +1,8 @@
 package com.example.plannersandmoversapp
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,6 +17,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.plannersandmoversapp.ui.theme.PlannersAndMoversAppTheme
@@ -35,7 +39,7 @@ class CompanyProfileActivity : ComponentActivity() {
 fun CompanyHomePage() {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-
+    val context = LocalContext.current
     //navigation logic
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -43,7 +47,14 @@ fun CompanyHomePage() {
             ModalDrawerSheet {
                 DrawerContent { selectedItem ->
                     scope.launch { drawerState.close() }
-                    // Handle drawer item click here (e.g., navigate or update content based on selection)
+                    when (selectedItem) {  // Use 'when' to handle different menu options
+                        "Log Out" -> {
+                            // Handle logout
+                            clearUserSession(context)  // Clear session
+                            val intent = Intent(context, LoginActivity::class.java)
+                            context.startActivity(intent)
+                            (context as? Activity)?.finish() // Finish current activity
+                        }}
                 }
             }
         },
@@ -70,6 +81,13 @@ fun CompanyHomePage() {
         }
     )
 }
+
+fun clearUserSession(context: Context) {
+    // Clear shared preferences or any stored user data
+    val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+    sharedPreferences.edit().clear().apply()
+}
+
 //drawer menu logic
 @Composable
 fun DrawerContent(onItemClick: (String) -> Unit) {
@@ -81,7 +99,9 @@ fun DrawerContent(onItemClick: (String) -> Unit) {
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { onItemClick(item) }
+                    .clickable {
+                            onItemClick(item)
+                        }
                     .padding(vertical = 8.dp)
             )
         }

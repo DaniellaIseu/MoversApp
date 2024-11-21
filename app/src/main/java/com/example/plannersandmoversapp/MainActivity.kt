@@ -34,22 +34,17 @@ class MainActivity : ComponentActivity() {
                 // Set up the NavHost for composables
                 NavHost(navController = navController, startDestination = "login") {
                     // Define your composable screens (Login, CompanyProfile, etc.)
-
-                    composable("companyProfile") { CompanyHomePage() }
+                    composable("login") { LoginScreen(onLoginClick = { _, _ -> navController.navigate("companyprofile") {
+                        // Remove all previous destinations from the back stack
+                        popUpTo("login") { inclusive = true } } }, onSignUpRedirectClick = { navController.navigate("signup") }) }
+                    composable("signup") { SignUpScreen(onSignUpClick = { _, _, _ -> navController.navigate("login")}, onLoginRedirectClick = { navController.navigate("login") }) }
+                    composable("companyprofile") { CompanyHomePage() }
                     // Add other composable screens here as needed
-                }
-
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
                 }
             }
         }
     }
 }
-
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
@@ -65,5 +60,5 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 fun GreetingPreview() {
     PlannersAndMoversAppTheme {
         Greeting("Android")
-    }
+        }
 }
