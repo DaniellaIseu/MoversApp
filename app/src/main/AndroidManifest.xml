@@ -40,6 +40,8 @@
         <activity android:name=".CompanyProfileActivity">
             <!-- Add any additional configurations for CompanyProfileActivity -->
         </activity>
+        <activity android:name=".CalendarManagerActivity" />
+
     </application>
 
 </manifest>

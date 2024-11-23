@@ -48,13 +48,18 @@ fun CompanyHomePage() {
                 DrawerContent { selectedItem ->
                     scope.launch { drawerState.close() }
                     when (selectedItem) {  // Use 'when' to handle different menu options
+                        "Bookings" -> {
+                            val intent = Intent(context, CalendarManagerActivity::class.java)
+                            context.startActivity(intent)
+                        }
                         "Log Out" -> {
                             // Handle logout
                             clearUserSession(context)  // Clear session
                             val intent = Intent(context, LoginActivity::class.java)
                             context.startActivity(intent)
                             (context as? Activity)?.finish() // Finish current activity
-                        }}
+                        }
+                    }
                 }
             }
         },
@@ -92,7 +97,7 @@ fun clearUserSession(context: Context) {
 @Composable
 fun DrawerContent(onItemClick: (String) -> Unit) {
     Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
-        val menuItems = listOf("Home", "Profile", "Services", "Contact Us", "Settings", "Log Out")
+        val menuItems = listOf("Home", "Profile", "Bookings", "Contact Us", "Settings", "Log Out")
         menuItems.forEach { item ->
             Text(
                 text = item,
