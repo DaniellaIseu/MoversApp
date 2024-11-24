@@ -43,7 +43,9 @@ class CalendarManagerActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PlannersAndMoversAppTheme {
-                CalendarManagerScreen()
+                HamburgerMenuScreen(title = "Awesome Movers Inc.") { innerModifier ->
+                    CalendarManagerScreen(modifier = innerModifier)
+                }
             }
         }
     }
@@ -51,7 +53,7 @@ class CalendarManagerActivity : ComponentActivity() {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun CalendarManagerScreen() {
+fun CalendarManagerScreen(modifier: Modifier = Modifier) {
     val bookings = remember {
         listOf(
             Booking("1", "Alice", "123-456-789", "2024-11-22", "2-bedroom move"),
@@ -201,6 +203,8 @@ fun BookingDetails(bookings: List<Booking>) {
 @Composable
 fun PreviewCalendarManagerScreen() {
     PlannersAndMoversAppTheme {
-        CalendarManagerScreen()
+        HamburgerMenuScreen(title = "Calendar Manager") { innerModifier ->
+            // Pass mocked data for the preview
+            CalendarManagerScreen(modifier = innerModifier)
     }
-}
+}}

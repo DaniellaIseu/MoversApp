@@ -137,7 +137,7 @@ fun saveToFirestore(
     )
 
     // Save data to Firestore under the "CompanyProfiles" collection
-    firestore?.collection("CompanyProfiles")
+    firestore?.collection("CompanyProfileData")
         ?.add(data)
         ?.addOnSuccessListener {
             // Success feedback to user
