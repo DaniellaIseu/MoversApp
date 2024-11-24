@@ -86,6 +86,11 @@
             android:label="Contact Us"
             android:exported="true" />
 
+        <!--Messages activity -->
+        <activity android:name=".MessagesActivity"
+            android:label="Messages"
+            android:exported="true" />
+
         <!-- Main Activity -->
         <activity
             android:name=".MainActivity"

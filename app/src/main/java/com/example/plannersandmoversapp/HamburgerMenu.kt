@@ -48,6 +48,10 @@ fun HamburgerMenuScreen(
                             val intent = Intent(context, CalendarManagerActivity::class.java)
                             context.startActivity(intent)
                         }
+                        "Messages" -> {
+                            val intent = Intent(context, MessagesActivity::class.java)
+                            context.startActivity(intent)
+                        }
                         "Log Out" -> {
                             logOutUser(context) // Handle logout
                         }
@@ -86,7 +90,7 @@ fun DrawerContent(onItemClick: (String) -> Unit) {
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        val menuItems = listOf("Home", "Profile", "Bookings", "Log Out")
+        val menuItems = listOf("Home", "Profile", "Bookings","Messages", "Log Out")
         menuItems.forEach { item ->
             Text(
                 text = item,
