@@ -41,16 +41,16 @@ fun NormalUserMenuScreen(
                             context.startActivity(intent)
                         }
                         "Bookings" -> {
-                           // val intent = Intent(context, BookingsActivity::class.java)
-                            //context.startActivity(intent)
+                           val intent = Intent(context, BookingActivity::class.java)
+                            context.startActivity(intent)
                         }
                         "Tracking" -> {
                             //val intent = Intent(context, TrackingActivity::class.java)
                            // context.startActivity(intent)
                         }
                         "Contact Page" -> {
-                            //val intent = Intent(context, ContactPageActivity::class.java)
-                            //context.startActivity(intent)
+                            val intent = Intent(context, ContactUsActivity::class.java)
+                            context.startActivity(intent)
                         }
                         "Moving Companies" -> {
                             //val intent = Intent(context, MovingCompaniesActivity::class.java)

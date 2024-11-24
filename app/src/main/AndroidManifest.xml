@@ -76,6 +76,16 @@
             android:label="Company Profile"
             android:exported="true" />
 
+        <!-- Booking activity -->
+        <activity android:name=".BookingActivity"
+            android:label="Booking"
+            android:exported="true" />
+
+        <!-- Contact Us activity -->
+        <activity android:name=".ContactUsActivity"
+            android:label="Contact Us"
+            android:exported="true" />
+
         <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
