@@ -41,20 +41,20 @@ fun NormalUserMenuScreen(
                             context.startActivity(intent)
                         }
                         "Bookings" -> {
-                           val intent = Intent(context, BookingActivity::class.java)
+                            val intent = Intent(context, BookingActivity::class.java)
                             context.startActivity(intent)
                         }
-                        "Tracking" -> {
+                        "Tracker" -> {
                             //val intent = Intent(context, TrackingActivity::class.java)
-                           // context.startActivity(intent)
+                            // context.startActivity(intent)
                         }
                         "Contact Page" -> {
                             val intent = Intent(context, ContactUsActivity::class.java)
                             context.startActivity(intent)
                         }
-                        "Moving Companies" -> {
-                            //val intent = Intent(context, MovingCompaniesActivity::class.java)
-                          //  context.startActivity(intent)
+                        "Moving Company" -> {
+                            val intent = Intent(context, UserMovingCompanyActivity::class.java)
+                            context.startActivity(intent)
                         }
                         "Log Out" -> {
                             logOutNormalUser(context) // Handle logout
@@ -94,7 +94,7 @@ fun NormalUserDrawerContent(onItemClick: (String) -> Unit) {
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        val menuItems = listOf("Home", "Bookings", "Tracking", "Contact Page", "Moving Companies", "Log Out")
+        val menuItems = listOf("Home", "Bookings", "Tracking", "Contact Page", "Moving Company", "Log Out")
         menuItems.forEach { item ->
             Text(
                 text = item,

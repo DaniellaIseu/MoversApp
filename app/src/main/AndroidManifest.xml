@@ -100,7 +100,7 @@
 
 
         <activity android:name=".CalendarManagerActivity" />
-
+        <activity android:name=".UserMovingCompanyActivity" />
     </application>
 
 </manifest>
