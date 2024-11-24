@@ -66,10 +66,10 @@ fun ContactUsPage() {
                             val intent = Intent(context, ContactUsActivity::class.java)
                             context.startActivity(intent)
                         }
-                        "Moving Companies" -> {
-                            // Uncomment and add your MovingCompaniesActivity here
-                            // val intent = Intent(context, MovingCompaniesActivity::class.java)
-                            // context.startActivity(intent)
+                        "Moving Company" -> {
+
+                            val intent = Intent(context, UserMovingCompanyActivity::class.java)
+                            context.startActivity(intent)
                         }
                         "Log Out" -> {
                             logOutNormalUser(context) // Handle logout
