@@ -62,19 +62,21 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.auth.ktx) // For Authentication
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.cardview)
     implementation(libs.androidx.constraintlayout)
-    implementation ("com.google.android.material:material:1.7.0")
-    implementation ("androidx.compose.material3:material3:1.0.0")
+    implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.compose.material3:material3:1.3.1") // Only keep this
     implementation(libs.androidx.room.common)
     implementation(libs.androidx.room.ktx)
-    implementation ("androidx.navigation:navigation-compose:2.7.3")
+    implementation("androidx.navigation:navigation-compose:2.8.4")
+    implementation(libs.firebase.database.ktx) // Firebase Realtime Database
     testImplementation(libs.junit)
-    implementation(platform("com.google.firebase:firebase-bom:32.2.3")) // Use latest BOM version
-    implementation("com.google.firebase:firebase-auth") // For Authentication
-
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0")) // Use latest BOM version
+    implementation("com.google.firebase:firebase-firestore-ktx") {
+        exclude(group = "com.google.firebase", module = "firebase-common")
+    } // Firebase Firestore
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

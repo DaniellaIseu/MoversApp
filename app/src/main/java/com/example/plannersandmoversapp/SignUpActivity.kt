@@ -27,21 +27,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.plannersandmoversapp.ui.theme.PlannersAndMoversAppTheme
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class SignUpActivity : ComponentActivity() {
 
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         firebaseAuth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
 
         setContent {
             PlannersAndMoversAppTheme {
                 SignUpScreen(
-                    onSignUpClick = { email, password, confirmPassword ->
-                        handleSignUp(email, password, confirmPassword)
+                    onSignUpClick = { email, password, confirmPassword, userType ->
+                        handleSignUp(email, password, confirmPassword, userType)
                     },
                     onLoginRedirectClick = {
                         val intent = Intent(this, LoginActivity::class.java)
@@ -52,17 +55,39 @@ class SignUpActivity : ComponentActivity() {
         }
     }
 
-    private fun handleSignUp(email: String, password: String, confirmPassword: String) {
-        if (email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
+    private fun handleSignUp(email: String, password: String, confirmPassword: String, userType: String?) {
+        if (email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty() && userType != null) {
             if (password == confirmPassword) {
                 firebaseAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            firebaseAuth.signOut()
-                            val intent = Intent(this, LoginActivity::class.java)
-                            startActivity(intent)
+                            val userId = firebaseAuth.currentUser?.uid
+                            val user = hashMapOf(
+                                "email" to email,
+                                "userType" to userType
+                            )
+                            if (userId != null) {
+                                firestore.collection("Users").document(userId)
+                                    .set(user)
+                                    .addOnSuccessListener {
+                                        firebaseAuth.signOut()
+                                        val intent = Intent(this, LoginActivity::class.java)
+                                        startActivity(intent)
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Toast.makeText(
+                                            this,
+                                            "Firestore error: ${e.message}",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                            }
                         } else {
-                            Toast.makeText(this, task.exception?.message ?: "Sign-Up Failed", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this,
+                                task.exception?.message ?: "Sign-Up Failed",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
             } else {
@@ -76,12 +101,13 @@ class SignUpActivity : ComponentActivity() {
 
 @Composable
 fun SignUpScreen(
-    onSignUpClick: (String, String, String) -> Unit,
+    onSignUpClick: (String, String, String, String?) -> Unit,
     onLoginRedirectClick: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+    var selectedUserType by remember { mutableStateOf<String?>(null) }
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -173,11 +199,32 @@ fun SignUpScreen(
                     singleLine = true
                 )
 
+                Spacer(modifier = Modifier.height(20.dp))
+
+                // User Type Selection
+                Text("Select User Type", fontWeight = FontWeight.Bold, color = Color.Black)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    RadioButton(
+                        selected = selectedUserType == "Company",
+                        onClick = { selectedUserType = "Company" }
+                    )
+                    Text("Company", Modifier.clickable { selectedUserType = "Company" })
+
+                    RadioButton(
+                        selected = selectedUserType == "Client",
+                        onClick = { selectedUserType = "Client" }
+                    )
+                    Text("Client", Modifier.clickable { selectedUserType = "Client" })
+                }
+
                 Spacer(modifier = Modifier.height(30.dp))
 
                 // Sign-Up Button
                 Button(
-                    onClick = { onSignUpClick(email, password, confirmPassword) },
+                    onClick = { onSignUpClick(email, password, confirmPassword, selectedUserType) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(60.dp),
@@ -208,13 +255,14 @@ fun SignUpScreen(
         }
     }
 }
+
 @Preview(showBackground = true, name = "Sign Up Screen")
 @Composable
 fun SignUpScreenPreview() {
     PlannersAndMoversAppTheme {
         SignUpScreen(
-            onSignUpClick = { _, _, _ -> },
+            onSignUpClick = { _, _, _, _ -> },
             onLoginRedirectClick = {}
-            )
-        }
+        )
+    }
 }

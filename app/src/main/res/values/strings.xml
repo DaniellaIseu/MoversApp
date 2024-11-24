@@ -4,4 +4,11 @@
     <string name="not_yet_registered_signup">Not yet registered? Signup</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="already_a_user_login">Already a user? Login</string>
+    <string name="normal_user_login_label">Normal User Login</string>
+    <string name="normal_user_signup_label">Normal User Sign Up</string>
+    <string name="normal_user_home_label">Normal User Home</string>
+    <string name="company_login_label">Company Login</string>
+    <string name="company_signup_label">Company Sign Up</string>
+    <string name="company_home_label">Company Home</string>
+    <string name="main_activity_label">Main</string>
 </resources>

@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.plannersandmoversapp">
+
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Add other permissions as needed -->
 
     <application
         android:allowBackup="true"
@@ -13,8 +19,9 @@
         android:theme="@style/Theme.PlannersAndMoversApp"
         tools:targetApi="31">
 
-        <!-- Splash Activity -->
-        <activity android:name=".SplashActivity"
+        <!-- Splash Screen -->
+        <activity
+            android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,24 +29,61 @@
             </intent-filter>
         </activity>
 
+        <!-- Normal User Login -->
+        <activity
+            android:name=".NormalUserLoginActivity"
+            android:exported="true"
+            android:label="@string/normal_user_login_label"
+            android:theme="@style/Theme.PlannersAndMoversApp" />
+
+        <!-- Normal User Sign-Up -->
+        <activity
+            android:name=".NormalUserSignUpActivity"
+            android:exported="true"
+            android:label="@string/normal_user_signup_label"
+            android:theme="@style/Theme.PlannersAndMoversApp" />
+
+        <!-- Normal User Home -->
+        <activity
+            android:name=".NormalUserHomeActivity"
+            android:exported="true"
+            android:label="@string/normal_user_home_label"
+            android:theme="@style/Theme.PlannersAndMoversApp" />
+
+        <!-- Moving Company Login -->
         <activity
             android:name=".LoginActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.PlannersAndMoversApp">
+            android:label="@string/company_login_label"
+            android:theme="@style/Theme.PlannersAndMoversApp" />
 
-        </activity>
+        <!-- Moving Company Sign-Up -->
         <activity
             android:name=".SignUpActivity"
+            android:exported="true"
+            android:label="@string/company_signup_label"
+            android:theme="@style/Theme.PlannersAndMoversApp" />
+
+        <!-- Moving Company Home -->
+        <activity
+            android:name=".CompanyProfileActivity"
+            android:exported="true"
+            android:label="@string/company_home_label"
+            android:theme="@style/Theme.PlannersAndMoversApp" />
+
+        <!-- Profile activity -->
+        <activity android:name=".CompanyUserProfileActivity"
+            android:label="Company Profile"
             android:exported="true" />
+
+        <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"
+            android:label="@string/main_activity_label"
+            android:theme="@style/Theme.PlannersAndMoversApp" />
 
-        <activity android:name=".CompanyProfileActivity">
-            <!-- Add any additional configurations for CompanyProfileActivity -->
-        </activity>
+
         <activity android:name=".CalendarManagerActivity" />
 
     </application>

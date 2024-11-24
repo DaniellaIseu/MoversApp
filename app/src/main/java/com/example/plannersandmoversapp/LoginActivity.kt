@@ -1,7 +1,5 @@
 package com.example.plannersandmoversapp
 
-
-
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -29,15 +27,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.plannersandmoversapp.ui.theme.PlannersAndMoversAppTheme
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 
 class LoginActivity : ComponentActivity() {
 
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         firebaseAuth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
 
         setContent {
             PlannersAndMoversAppTheme {
@@ -58,8 +60,10 @@ class LoginActivity : ComponentActivity() {
         if (email.isNotEmpty() && password.isNotEmpty()) {
             firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
+                    val user = firebaseAuth.currentUser
+                    user?.let {
+                        checkUserType(user.uid) // Fetch user type from Firestore
+                    }
                 } else {
                     Toast.makeText(this, task.exception?.message ?: "Login Failed", Toast.LENGTH_SHORT).show()
                 }
@@ -69,11 +73,47 @@ class LoginActivity : ComponentActivity() {
         }
     }
 
+    private fun checkUserType(userId: String) {
+        val userRef = firestore.collection("Users").document(userId)
+
+        userRef.get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val document: DocumentSnapshot? = task.result
+                if (document != null && document.exists()) {
+                    val userType = document.getString("userType")
+                    when (userType) {
+                        "Company" -> {
+                            // Redirect to Company Profile
+                            val intent = Intent(this@LoginActivity, CompanyProfileActivity::class.java)
+                            startActivity(intent)
+                            finish()  // Close login activity
+                        }
+                        "Client" -> {
+                            // Redirect to Normal User Home
+                            val intent = Intent(this@LoginActivity, NormalUserHomeActivity::class.java)
+                            startActivity(intent)
+                            finish()  // Close login activity
+                        }
+                        else -> {
+                            Toast.makeText(this@LoginActivity, "Invalid user type", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } else {
+                    Toast.makeText(this@LoginActivity, "User not found in database", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this@LoginActivity, "Error retrieving user type", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     override fun onStart() {
         super.onStart()
         if (firebaseAuth.currentUser != null) {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            val user = firebaseAuth.currentUser
+            user?.let {
+                checkUserType(user.uid)
+            }
         }
     }
 }
@@ -188,6 +228,7 @@ fun LoginScreen(
         }
     }
 }
+
 @Preview(showBackground = true, name = "Login Screen Preview")
 @Composable
 fun LoginScreenPreview() {
@@ -195,6 +236,6 @@ fun LoginScreenPreview() {
         LoginScreen(
             onLoginClick = { _, _ -> },
             onSignUpRedirectClick = {}
-           )
-        }
+        )
+    }
 }
