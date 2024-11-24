@@ -25,17 +25,34 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.plannersandmoversapp.ui.theme.PlannersAndMoversAppTheme
+import com.google.firebase.firestore.FirebaseFirestore
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.*
 
 data class Booking(
-    val id: String,
-    val name: String,
-    val phone: String,
-    val date: String,
-    val description: String
+    val id: String = "",
+    val name: String = "",
+    val phone: String = "",
+    val email: String = "",
+    val bookingType: String = "",
+    val propertyType: String = "",
+    val pickupLocation: String = "",
+    val pickupDate: String = "",
+    val pickupTime: String = "",
+    val dropOffLocation: String = "",
+    val dropOffDate: String = "",
+    val dropOffTime: String = "",
+    val inventoryItems: String = "",
+    val additionalNotes: String = "",
+    val packingService: Boolean = false,
+    val disassemblyService: Boolean = false,
+    val storageService: Boolean = false,
+    val heavyLifting: Boolean = false,
+    val preferredVehicleSize: String = "",
+    val paymentMethod: String = ""
 )
+
 
 class CalendarManagerActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -54,17 +71,61 @@ class CalendarManagerActivity : ComponentActivity() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CalendarManagerScreen(modifier: Modifier = Modifier) {
-    val bookings = remember {
+   /* val bookings = remember {
         listOf(
             Booking("1", "Alice", "123-456-789", "2024-11-22", "2-bedroom move"),
             Booking("2", "Bob", "987-654-321", "2024-11-22", "Office relocation"),
             Booking("3", "Charlie", "555-555-555", "2024-11-23", "Studio move")
         )
-    }
-
+    }*/
+    val bookings = remember { mutableStateListOf<Booking>() }
     var selectedDate by remember { mutableStateOf("2024-11-22") }
     var currentMonth by remember { mutableStateOf(YearMonth.now()) }
+    var isLoading by remember { mutableStateOf(true) }
 
+    // Fetch data from Firestore
+    LaunchedEffect(currentMonth) {
+        isLoading = true
+        val db = FirebaseFirestore.getInstance()
+        db.collection("Bookings")
+            .get()
+            .addOnSuccessListener { result ->
+                bookings.clear()
+                for (document in result) {
+                    val booking = Booking(
+                        id = document.id,
+                        name = document.getString("name") ?: "Unknown",
+                        phone = document.getString("phone") ?: "N/A",
+                        email = document.getString("email") ?: "N/A",
+                        bookingType = document.getString("bookingType") ?: "N/A",
+                        propertyType = document.getString("propertyType") ?: "N/A",
+                        pickupLocation = document.getString("pickupLocation") ?: "N/A",
+                        pickupDate = document.getString("pickupDate") ?: "N/A",
+                        pickupTime = document.getString("pickupTime") ?: "N/A",
+                        dropOffLocation = document.getString("dropOffLocation") ?: "N/A",
+                        dropOffDate = document.getString("dropOffDate") ?: "N/A",
+                        dropOffTime = document.get("dropOffTime")?.toString() ?: "N/A",
+                        inventoryItems = document.getString("inventoryItems") ?: "N/A",
+                        additionalNotes = document.getString("additionalNotes") ?: "N/A",
+                        packingService = document.getBoolean("packingService") ?: false,
+                        disassemblyService = document.getBoolean("disassemblyService") ?: false,
+                        storageService = document.getBoolean("storageService") ?: false,
+                        heavyLifting = document.getBoolean("heavyLifting") ?: false,
+                        preferredVehicleSize = document.getString("preferredVehicleSize") ?: "N/A",
+                        paymentMethod = document.getString("paymentMethod") ?: "N/A"
+                    )
+                    bookings.add(booking)
+                }
+                isLoading = false
+                // Set a default selected date if available
+                if (selectedDate.isEmpty() && bookings.isNotEmpty()) {
+                    selectedDate = bookings.first().pickupDate
+                }
+            }
+            .addOnFailureListener {
+                isLoading = false
+            }
+    }
     Column(Modifier.fillMaxSize().padding(16.dp)) {
         Text(
             text = "Manage Bookings",
@@ -93,7 +154,7 @@ fun CalendarManagerScreen(modifier: Modifier = Modifier) {
 
         // Booking Details Section
         BookingDetails(
-            bookings = bookings.filter { it.date == selectedDate }
+            bookings = bookings.filter { it.pickupDate == selectedDate }
         )
     }
 }
@@ -140,7 +201,7 @@ fun BookingCalendar(
     LazyRow(Modifier.fillMaxWidth()) {
         items(days.size) { index ->
             val day = days[index]
-            val hasBooking = bookings.any { it.date == day }
+            val hasBooking = bookings.any { it.pickupDate == day }
             val isSelected = day == selectedDate
 
             Box(
@@ -190,7 +251,24 @@ fun BookingDetails(bookings: List<Booking>) {
                     Column(Modifier.padding(16.dp)) {
                         Text(text = "Name: ${booking.name}", fontSize = 18.sp)
                         Text(text = "Phone: ${booking.phone}", fontSize = 16.sp)
-                        Text(text = "Description: ${booking.description}", fontSize = 16.sp)
+                        Text(text = "Email: ${booking.email}", fontSize = 16.sp)
+                        Text(text = "Booking Type: ${booking.bookingType}", fontSize = 16.sp)
+                        Text(text = "Property Type: ${booking.propertyType}", fontSize = 16.sp)
+                        Text(text = "Pickup Location: ${booking.pickupLocation}", fontSize = 16.sp)
+                        Text(text = "Pickup Date: ${booking.pickupDate}", fontSize = 16.sp)
+                        Text(text = "Pickup Time: ${booking.pickupTime}", fontSize = 16.sp)
+                        Text(text = "Dropoff Location: ${booking.dropOffLocation}", fontSize = 16.sp)
+                        Text(text = "Dropoff Date: ${booking.dropOffDate}", fontSize = 16.sp)
+                        Text(text = "Dropoff Time: ${booking.dropOffTime}", fontSize = 16.sp)
+                        Text(text = "Inventory Items: ${booking.inventoryItems}", fontSize = 16.sp)
+                        Text(text = "Additional Notes: ${booking.additionalNotes}", fontSize = 16.sp)
+                        Text(text = "Packing Service: ${if (booking.packingService) "Yes" else "No"}", fontSize = 16.sp)
+                        Text(text = "Disassembly Service: ${if (booking.disassemblyService) "Yes" else "No"}", fontSize = 16.sp)
+                        Text(text = "Storage Service: ${if (booking.storageService) "Yes" else "No"}", fontSize = 16.sp)
+                        Text(text = "Heavy Lifting: ${if (booking.heavyLifting) "Yes" else "No"}", fontSize = 16.sp)
+                        Text(text = "Preferred Vehicle Size: ${booking.preferredVehicleSize}", fontSize = 16.sp)
+                        Text(text = "Payment Method: ${booking.paymentMethod}", fontSize = 16.sp)
+
                     }
                 }
             }

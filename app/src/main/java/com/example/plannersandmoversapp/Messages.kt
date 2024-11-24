@@ -25,7 +25,8 @@ class MessagesActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PlannersAndMoversAppTheme {
-                MessagesPage()
+                HamburgerMenuScreen(title = "Messages") { innerModifier ->
+                    MessagesPage(modifier = innerModifier)
             }
         }
     }
@@ -33,7 +34,7 @@ class MessagesActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MessagesPage() {
+fun MessagesPage(modifier: Modifier = Modifier) {
     val database = FirebaseFirestore.getInstance()
     var messages by remember { mutableStateOf(listOf<Message>()) }
     var isLoading by remember { mutableStateOf(true) }
@@ -136,4 +137,4 @@ fun MessagesPagePreview() {
     PlannersAndMoversAppTheme {
         MessagesPage()
     }
-}
+}}
