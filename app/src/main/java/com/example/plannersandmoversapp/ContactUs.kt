@@ -71,6 +71,10 @@ fun ContactUsPage() {
                             val intent = Intent(context, UserMovingCompanyActivity::class.java)
                             context.startActivity(intent)
                         }
+                        "My Bookings" -> {
+                            val intent = Intent(context, BookingListActivity::class.java)
+                            context.startActivity(intent)
+                        }
                         "Log Out" -> {
                             logOutNormalUser(context) // Handle logout
                         }

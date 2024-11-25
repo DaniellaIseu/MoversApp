@@ -101,6 +101,7 @@
 
         <activity android:name=".CalendarManagerActivity" />
         <activity android:name=".UserMovingCompanyActivity" />
+        <activity android:name=".BookingListActivity" />
     </application>
 
 </manifest>

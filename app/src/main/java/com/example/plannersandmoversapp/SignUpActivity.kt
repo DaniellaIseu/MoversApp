@@ -124,7 +124,7 @@ fun SignUpScreen(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(30.dp)
+                .padding(25.dp)
                 .align(Alignment.Center), // Center alignment
             shape = RoundedCornerShape(30.dp),
             elevation = CardDefaults.elevatedCardElevation(20.dp)
@@ -146,7 +146,7 @@ fun SignUpScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 // Email Input
                 OutlinedTextField(
@@ -163,7 +163,7 @@ fun SignUpScreen(
                     singleLine = true
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 // Password Input
                 OutlinedTextField(
@@ -181,7 +181,7 @@ fun SignUpScreen(
                     singleLine = true
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 // Confirm Password Input
                 OutlinedTextField(
@@ -199,7 +199,7 @@ fun SignUpScreen(
                     singleLine = true
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 // User Type Selection
                 Text("Select User Type", fontWeight = FontWeight.Bold, color = Color.Black)
@@ -220,7 +220,7 @@ fun SignUpScreen(
                     Text("Client", Modifier.clickable { selectedUserType = "Client" })
                 }
 
-                Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(15.dp))
 
                 // Sign-Up Button
                 Button(
@@ -240,12 +240,12 @@ fun SignUpScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(2.dp))
 
                 // Login Redirect Text
                 Text(
                     text = stringResource(id = R.string.already_a_user_login),
-                    fontSize = 18.sp,
+                    fontSize = 12.sp,
                     color = Color.Black,
                     modifier = Modifier
                         .clickable { onLoginRedirectClick() }
