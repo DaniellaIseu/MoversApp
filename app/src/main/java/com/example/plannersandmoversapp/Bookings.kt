@@ -109,11 +109,6 @@ fun BookingPage() {
                             val intent = Intent(context, BookingActivity::class.java)
                             context.startActivity(intent)
                         }
-                        "Tracking" -> {
-                            // Uncomment and add your TrackingActivity here
-                            // val intent = Intent(context, TrackingActivity::class.java)
-                            // context.startActivity(intent)
-                        }
                         "Contact Page" -> {
                             val intent = Intent(context, ContactUsActivity::class.java)
                             context.startActivity(intent)

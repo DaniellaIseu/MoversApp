@@ -44,10 +44,6 @@ fun NormalUserMenuScreen(
                             val intent = Intent(context, BookingActivity::class.java)
                             context.startActivity(intent)
                         }
-                        "Tracker" -> {
-                            //val intent = Intent(context, TrackingActivity::class.java)
-                            // context.startActivity(intent)
-                        }
                         "Contact Page" -> {
                             val intent = Intent(context, ContactUsActivity::class.java)
                             context.startActivity(intent)
@@ -98,7 +94,7 @@ fun NormalUserDrawerContent(onItemClick: (String) -> Unit) {
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        val menuItems = listOf("Home", "Bookings", "Tracking", "Contact Page", "Moving Company","My Bookings", "Log Out")
+        val menuItems = listOf("Home", "Bookings", "Contact Page", "Moving Company","My Bookings", "Log Out")
         menuItems.forEach { item ->
             Text(
                 text = item,
